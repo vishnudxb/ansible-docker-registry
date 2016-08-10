@@ -1,0 +1,15 @@
+---
+- name: Create a directory to save the ssl certs
+  file: path=/etc/nginx/ssl state=directory mode=0755
+
+- name: Making sure that the default Nginx site is not enabled...
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  notify: restart nginx
+
+- name: Copying nginx config file...
+  template: src=nginx.conf dest=/etc/nginx/sites-enabled/01-{{ server_name }}.conf mode=0644 owner=root group=root
+  notify: restart nginx
+
+- name: Copying additional nginx options config...
+  copy: src=nginx/options.conf dest=/etc/nginx/conf.d/options.conf mode=0644 owner=root group=root
+  notify: restart nginx

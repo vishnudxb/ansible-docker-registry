@@ -1,0 +1,9 @@
+---
+- name: Create a directory to save the images
+  file: path=/registry state=directory mode=0755
+
+- name: Running docker master registry
+  shell: docker run -d -p 1020:5000 -v /registry:/var/lib/registry --name registry-master --restart=always registry:2
+
+- name: Running docker slave registry
+  shell: docker run -d -p 1021:5000 -v /registry:/var/lib/registry --name registry-slave --restart=always registry:2

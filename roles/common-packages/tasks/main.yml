@@ -1,0 +1,46 @@
+---
+- name: Making sure apt cache is up to date...
+  apt: update_cache=yes cache_valid_time=86400
+
+- name: Installing must-have tools...
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - locales
+    - sysstat
+    - rsync
+    - vim
+    - strace
+    - tcpdump
+    - lsof
+    - traceroute
+    - screen
+    - tmux
+    - python-pycurl
+    - ntp
+    - unzip
+    - logrotate
+    - less
+    - curl
+    - telnet
+    - htop
+    - python-pip
+    - apt-transport-https
+    - ca-certificates
+
+
+
+- name: Downloading and installing latest updates to instance...
+  apt: upgrade=dist
+
+- name: Create en_US.UTF-8 locale
+  locale_gen: name=en_US.UTF-8 state=present
+
+- name: Add the docker key
+  apt_key: keyserver=p80.pool.sks-keyservers.net id=58118E89F3A912897C070ADBF76221572C52609D
+
+- name: Update after adding the docker key
+  apt: update_cache=yes
+
+- name: Install docker
+  apt: name=docker-engine state=present
+  notify: restart docker

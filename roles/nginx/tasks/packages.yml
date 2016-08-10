@@ -1,0 +1,10 @@
+---
+- name: Making sure system dependencies are installed from apt...
+  apt: pkg={{ item }} state=present
+  with_items:
+    - nginx
+    - nginx-common
+    - curl
+
+- name: copy logrotate file
+  copy: src=nginx-logrotate dest=/etc/logrotate.d/nginx  mode=0644 owner=root group=root

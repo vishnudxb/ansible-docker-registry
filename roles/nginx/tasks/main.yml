@@ -1,0 +1,9 @@
+---
+- include: packages.yml
+- include: configs.yml
+
+- name: Increase the size of the socket listen queue
+  sysctl: name=net.core.somaxconn value=2048 state=present
+
+- name: Increase the size of the tcp syn packet backlog
+  sysctl: name=net.ipv4.tcp_max_syn_backlog value=2048 state=present

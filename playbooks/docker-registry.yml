@@ -1,0 +1,15 @@
+---
+- name: Setup docker-registry in AWS region
+  hosts: tag_Name_docker-registry
+  gather_facts: false
+  become: yes
+  become_user: root
+
+  roles:
+    - common-packages
+    - docker-registry
+
+    - role:            "nginx"
+      server_name:     "docker-registry.vishnudxb.me"
+      ssl_bundle_crt:  "/etc/nginx/ssl/ssl-bundle.crt"
+      ssl_crt_key:     "/etc/nginx/ssl/ssl-cert.key"
